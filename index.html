@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20. Századi Írók, Költők Kvíz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .quiz-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .answers {
+            list-style-type: none;
+            padding: 0;
+        }
+        .answers li {
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .correct {
+            color: lightgreen;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>20. Századi Írók, Költők Kvíz</h1>
+        <form id="quizForm">
+            <div class="question" data-correct="Ady Endre, József Attila, Babits Mihály, Móricz Zsigmond, Tóth Árpád">
+                <p>Melyik 5 költő Nyugathoz köthető a következők közül? (válaszd ki a helyes válaszokat)</p>
+                <ul class="answers">
+                    <li><input type="checkbox" id="q1a1" name="question1" value="Ady Endre">Ady Endre</li>
+                    <li><input type="checkbox" id="q1a2" name="question1" value="Petőfi Sándor">Petőfi Sándor</li>
+                    <li><input type="checkbox" id="q1a3" name="question1" value="József Attila">József Attila</li>
+                    <li><input type="checkbox" id="q1a4" name="question1" value="Babits Mihály">Babits Mihály</li>
+                    <li><input type="checkbox" id="q1a5" name="question1" value="Móricz Zsigmond">Móricz Zsigmond</li>
+                    <li><input type="checkbox" id="q1a6" name="question1" value="Tóth Árpád">Tóth Árpád</li>
+                    <li><input type="checkbox" id="q1a7" name="question1" value="Karinthy Frigyes">Karinthy Frigyes</li>
+                    <li><input type="checkbox" id="q1a8" name="question1" value="Radnóti Miklós">Radnóti Miklós</li>
+                    <li><input type="checkbox" id="q1a9" name="question1" value="Vörösmarty Mihály">Vörösmarty Mihály</li>
+                    <li><input type="checkbox" id="q1a10" name="question1" value="Jékely Zoltán">Jékely Zoltán</li>
+                </ul>
+            </div>
+            <div class="question" data-correct="Szabad-ötletek jegyzete">
+                <p>Milyen névvel illetik József Attila asszociációs naplóját?</p>
+                <input type="text" id="q2" name="question2">
+            </div>
+            <div class="question" data-correct="az írógépe">
+                <p>Ki volt Mercedes, Janikovszky Éva kedvenc munkatársa?</p>
+                <input type="text" id="q3" name="question3">
+            </div>
+            <div class="question" data-correct="Romhányi József">
+                <p>Kitől származik az idézet? „Huszonkét esztelen, félmeztelen egyén, egymás hátán-hegyén nyüzsög lenn a pályán. Mások mája táján taposnak, és ha elég laposnak lát a bíró minden egyest, megítél egy tizenegyest.”</p>
+                <ul class="answers">
+                    <li><input type="radio" id="q4a1" name="question4" value="Romhányi József">Romhányi József</li>
+                    <li><input type="radio" id="q4a2" name="question4" value="Petőfi Sándor">Petőfi Sándor</li>
+                    <li><input type="radio" id="q4a3" name="question4" value="József Attila">József Attila</li>
+                </ul>
+            </div>
+            <div class="question" data-correct="Török Sophie, Babits Mihály">
+                <p>Mi volt Tanner Ilona álneve, és ki volt a férje?</p>
+                <input type="text" id="q5" name="question5">
+            </div>
+        </form>
+        <button type="button" onclick="checkAnswers()">Eredmény</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        function checkAnswers() {
+            var correct = 0;
+            var total = 0;
+            var questions = document.querySelectorAll('.question');
+            var resultHTML = '';
+
+            questions.forEach((question) => {
+                var correctAnswer = question.getAttribute('data-correct').toLowerCase();
+                var selectedAnswer;
+                total++;
+
+                if (question.querySelector('input[type="checkbox"]')) {
+                    // Check for selected checkboxes
+                    var checkedBoxes = question.querySelectorAll('input[type="checkbox"]:checked');
+                    var userAnswers = Array.from(checkedBoxes).map(checkbox => checkbox.value.toLowerCase()).join(', ');
+                    var correctAnswersArray = correctAnswer.split(', ').map(ans => ans.toLowerCase());
+
+                    // Check if the user provided the correct answers
+                    var allCorrect = correctAnswersArray.every(ans => userAnswers.includes(ans));
+                    if (allCorrect && checkedBoxes.length === 5) {
+                        correct++;
+                        resultHTML += `<p class="correct">${question.innerText} - Helyes válasz: ${correctAnswer}</p>`;
+                    } else {
+                        resultHTML += `<p class="incorrect">${question.innerText} - Helytelen válasz! Helyes válasz: ${correctAnswer}</p>`;
+                    }
+                } else if (question.querySelector('input[type="text"]')) {
+                    selectedAnswer = question.querySelector('input[type="text"]').value.toLowerCase().trim();
+                    // Allow slight variations in the answer
+                    if (selectedAnswer.includes(correctAnswer) || correctAnswer.includes(selectedAnswer)) {
+                        correct++;
+                        resultHTML += `<p class="correct">${question.innerText} - Helyes válasz: ${correctAnswer}</p>`;
+                    } else {
+                        resultHTML += `<p class="incorrect">${question.innerText} - Helytelen válasz! Helyes válasz: ${correctAnswer}</p>`;
+                    }
+                } else {
+                    selectedAnswer = question.querySelector('input[name="question' + (total) + '"]:checked');
+                    if (selectedAnswer && selectedAnswer.value.toLowerCase() === correctAnswer) {
+                        correct++;
+                        resultHTML += `<p class="correct">${question.innerText} - Helyes válasz: ${correctAnswer}</p>`;
+                    } else {
+                        resultHTML += `<p class="incorrect">${question.innerText} - Helytelen válasz! Helyes válasz: ${correctAnswer}</p>`;
+                    }
+                }
+            });
+
+            var resultText = `Helyes válaszok: ${correct} / ${total}`;
+            resultHTML = resultText + '<br>' + resultHTML;
+            document.getElementById('result').innerHTML = resultHTML;
+        }
+    </script>
+</body>
+</html>
